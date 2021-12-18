@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LogInActivity">
+
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="248dp"
+        android:layout_height="251dp"
+        android:layout_marginTop="116dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/instaflix_logo" />
+
+    <EditText
+        android:id="@+id/useranmeInputEditText"
+        android:layout_width="361dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="7dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userNameTextView" />
+
+    <TextView
+        android:id="@+id/userNameTextView"
+        android:layout_width="162dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="244dp"
+        android:text="Username:"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoImageView" />
+
+    <TextView
+        android:id="@+id/passwordTextView"
+        android:layout_width="162dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="244dp"
+        android:text="Password:"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/useranmeInputEditText" />
+
+    <EditText
+        android:id="@+id/passwordInputEditText"
+        android:layout_width="356dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="30dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordTextView" />
+
+    <Button
+        android:id="@+id/signUpButton"
+        android:layout_width="106dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="48dp"
+        android:backgroundTint="@color/color_1"
+        android:text="Sign Up"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordInputEditText" />
+
+    <Button
+        android:id="@+id/logInButton"
+        android:layout_width="106dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/color_1"
+        android:text="Log In"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordInputEditText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
