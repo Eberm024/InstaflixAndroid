@@ -2,16 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.instaflix">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@drawable/instaflix_logo"
         android:label="@string/app_name"
         android:roundIcon="@drawable/instaflix_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Instaflix">
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_home" />
         <activity
             android:name=".SplashScreenActivity"
             android:exported="true">
@@ -40,7 +45,6 @@
         <meta-data
             android:name="com.parse.CLIENT_URL"
             android:value="@string/back4app_client_url" />
-
     </application>
 
 </manifest>

@@ -3,4 +3,8 @@
     <string name="back4app_server_url">https://parseapi.back4app.com/</string>
     <string name="back4app_app_id">1aj9xzO1QdtzVl1snnZngTBBouoBKOf9AN6dUGG2</string>
     <string name="back4app_client_url">v3hVzdztxTQonHIjJhANEGNG0fDCvBGwswxnnihQ</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_search">Search</string>
+    <string name="title_settings">Settings</string>
 </resources>
