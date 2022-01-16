@@ -1,6 +1,5 @@
 package com.example.instaflix.ui.settings
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -53,6 +52,12 @@ class SettingsFragment : Fragment() {
         //buttons for the fragment
         super.onActivityCreated(savedInstanceState)
         val logoutButton: Button = requireActivity().findViewById<Button>(R.id.btn_logout)
+        val usernameTextView: TextView =
+            requireActivity().findViewById<TextView>(R.id.txt_username)
+
+        var bundle = requireActivity().getIntent().getExtras()
+        val user: ParseUser = bundle?.get("user") as ParseUser
+        usernameTextView.text = user.username
 
         logoutButton.setOnClickListener {
             onClickLogout()

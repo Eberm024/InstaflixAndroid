@@ -10,13 +10,9 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.parse.Parse
 import com.parse.ParseException
 import com.parse.ParseUser
 import com.parse.SignUpCallback
-import com.parse.LogInCallback
-import android.widget.ProgressBar
-import androidx.appcompat.app.AlertDialog
 
 class LogInActivity : AppCompatActivity() {
 
@@ -73,8 +69,6 @@ class LogInActivity : AppCompatActivity() {
             val user = ParseUser()
             user.username = username
             user.setPassword(pass)
-            Log.d("username_textfield", username)
-            Log.d("password_textfield", pass)
 
             //alertDialog
             val newFragment = ProgressBarDialogFragment()
