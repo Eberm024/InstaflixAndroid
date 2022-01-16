@@ -1,16 +1,21 @@
 package com.example.instaflix.ui.settings
 
-import android.app.Activity
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.instaflix.ProgressBarDialogFragment
 import com.example.instaflix.databinding.FragmentSettingsBinding
+import com.example.instaflix.R
+import com.parse.ParseException
+import com.parse.ParseUser
 
 class SettingsFragment : Fragment() {
 
@@ -44,8 +49,25 @@ class SettingsFragment : Fragment() {
         _binding = null
     }
 
-    fun onClickLogout(view: View) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        //buttons for the fragment
+        super.onActivityCreated(savedInstanceState)
+        val logoutButton: Button = requireActivity().findViewById<Button>(R.id.btn_logout)
 
-        activity?.onBackPressed()
+        logoutButton.setOnClickListener {
+            onClickLogout()
+        }
+    }
+
+    private fun onClickLogout() {
+        val newFragment = ProgressBarDialogFragment()
+        newFragment?.show(childFragmentManager, "progressBar")
+        ParseUser.logOutInBackground {e: ParseException? ->
+            newFragment?.dismiss()
+            if (e == null) {
+                Toast.makeText(activity, "Sign out successful", Toast.LENGTH_SHORT).show()
+                requireActivity().finish()
+            }
+        }
     }
 }
