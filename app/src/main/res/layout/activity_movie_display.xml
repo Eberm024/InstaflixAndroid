@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/img_movieBackdrop"
+        android:layout_width="395dp"
+        android:layout_height="235dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <ImageView
+        android:id="@+id/img_movie_display_poster"
+        android:layout_width="130dp"
+        android:layout_height="205dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="156dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textView_movie_display_title"
+        android:layout_width="234dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="16dp"
+        android:maxLines="3"
+        android:minLines="1"
+        android:text="Title"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.789"
+        app:layout_constraintStart_toEndOf="@+id/img_movie_display_poster"
+        app:layout_constraintTop_toBottomOf="@+id/img_movieBackdrop" />
+
+    <TextView
+        android:id="@+id/textView_movie_display_description"
+        android:layout_width="375dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="144dp"
+        android:maxLines="8"
+        android:minLines="1"
+        android:text="Title"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.555"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_movieBackdrop" />
+</androidx.constraintlayout.widget.ConstraintLayout>

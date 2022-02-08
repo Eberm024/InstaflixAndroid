@@ -43,8 +43,11 @@
             android:name="com.parse.APPLICATION_ID"
             android:value="@string/back4app_app_id" />
         <meta-data
-            android:name="com.parse.CLIENT_URL"
-            android:value="@string/back4app_client_url" />
+            android:name="com.parse.CLIENT_KEY"
+            android:value="@string/back4app_client_key" />
+        <meta-data
+            android:name="com.tmdb.API_KEY"
+            android:value="@string/tmdb_app_key" />
     </application>
 
 </manifest>

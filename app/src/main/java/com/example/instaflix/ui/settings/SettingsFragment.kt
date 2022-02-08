@@ -48,9 +48,10 @@ class SettingsFragment : Fragment() {
         _binding = null
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         //buttons for the fragment
-        super.onActivityCreated(savedInstanceState)
         val logoutButton: Button = requireActivity().findViewById<Button>(R.id.btn_logout)
         val usernameTextView: TextView =
             requireActivity().findViewById<TextView>(R.id.txt_username)
