@@ -88,9 +88,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d("waitTime", "Now waiting for 2 seconds for getDiscoverJSONArray to finish...")
         Handler().postDelayed({
-            Log.d("waitTime", "Now waiting for 3 seconds for getDiscoverJSONArray to finish...")
-
             /* Initialize Recyclerview, LayoutManager, and Adapters */
             mRecyclerView = view?.findViewById(R.id.homeRecyclerView)
             mRecyclerView?.setHasFixedSize(true)
@@ -123,7 +122,7 @@ class HomeFragment : Fragment() {
             mRecyclerView?.adapter = HomeAdapter(data)
             mRecyclerView?.adapter?.notifyDataSetChanged()
 
-        }, 3000) //3 sec
+        }, 2000) //2 sec
 
         //ok the new goal now is to find a way to add a new item into the recycler view list
         // as it is the itemCount is 0, so I have to go and add 1 item...
