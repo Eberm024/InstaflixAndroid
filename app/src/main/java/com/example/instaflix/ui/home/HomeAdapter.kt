@@ -1,18 +1,4 @@
-/* combining these 2 ideas... mostly the first idea but with direct data sent from list provider (fragment calling it)
-* Flower that goes to store in local datastore flower item:
-* https://github.com/android/views-widgets-samples/blob/main/RecyclerViewKotlin/app/src/main/java/com/example/recyclersample/flowerList/FlowersAdapter.kt#L65
-*
-* CustomAdapter example:
-* https://github.com/android/views-widgets-samples/blob/main/RecyclerView/Application/src/main/java/com/example/android/recyclerview/CustomAdapter.java#L76
-*
-*
-* OK time to decide wheter to implement clicking in HomeAdapter (Flower Way) or HomeFragment (CustomAdapter way)
-* whatever it is, Homefragment must give the dataSet information (Array) and the Adapter will handle the numerization
-* at least for primitive datatypes automatically
-*
-* fuck this I will rewrite this class
-*
-* */
+
 package com.example.instaflix.ui.home
 
 import android.view.LayoutInflater
@@ -22,7 +8,7 @@ import com.example.instaflix.R
 import com.example.instaflix.data.Movie
 import com.squareup.picasso.Picasso
 
-class HomeAdapter(private val mList: List<Movie>):
+class HomeAdapter(private val mList: List<Movie>, private val onItemClicked: (position: Int) -> Unit):
     RecyclerView.Adapter<HomeViewHolder>() {
 
 
@@ -31,7 +17,7 @@ class HomeAdapter(private val mList: List<Movie>):
         val view = LayoutInflater.from(parent.context).
                 inflate(R.layout.home_item, parent, false)
 
-        return HomeViewHolder(view)
+        return HomeViewHolder(view, onItemClicked)
     }
 
     //gets current item
@@ -52,6 +38,7 @@ class HomeAdapter(private val mList: List<Movie>):
         } else {
             holder.movieImageView.setImageResource(R.drawable.account_profile) //add generic movie icon
         }
+
 
     }
 
