@@ -5,55 +5,44 @@
 *  JSON library for processing JSON format  https://www.tutorialspoint.com/android/android_json_parser.htm#:~:text=JSON%20-%20Parsing%20%20%20%20Sr.No%20,method%20returns%20...%20%203%20more%20rows%20
 *  Android's page https://developer.android.com/training/volley/
 *
-* some help on different oncreates in fragments
-* https://stackoverflow.com/questions/28929637/difference-and-uses-of-oncreate-oncreateview-and-onactivitycreated-in-fra#:~:text=The%20onCreate%20%28%29%20method%20in%20a%20Fragment%20is,doesn%27t%20involve%20the%20View%20hierarchy%20%28i.e.%20non-graphical%20initialisations%29.
 *
+* following this for recyclerview, adapter and data in Kotlin:
+* https://www.geeksforgeeks.org/android-recyclerview-in-kotlin/
 *
-*  also this is the request link in movieDB for discover:
-* https://api.themoviedb.org/3/discover/movie?api_key=34872395426d9e0ba548d1d51cbd6c10&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate
-*
-* need to understand the ViewHolder which is the individual item viewHolder objects..
-* need to create: Adapters, ListViewModels?, viewHolder? look on the recycler view doc at the top and below here:
-*
-* https://github.com/android/views-widgets-samples/tree/main/RecyclerViewKotlin/app/src/main/java/com/example/recyclersample/flowerList
-*
-*
+* ok now find a way for each list item to have an onClickListener button, fix some display bugs in the items
 *  */
 package com.example.instaflix.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
-import com.example.instaflix.R
-import com.example.instaflix.databinding.FragmentHomeBinding
-
 import com.android.volley.toolbox.Volley
+import com.example.instaflix.LogInActivity
+import com.example.instaflix.R
+import com.example.instaflix.data.Movie
+import com.example.instaflix.databinding.FragmentHomeBinding
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
-import com.example.instaflix.helper.RequestHelper
+
 
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
     private var discoverResult: JSONArray? = null
+    private var mRecyclerView: RecyclerView? = null
+    private var mLayoutManager: RecyclerView.LayoutManager? = null
 
     /* fix this by creating HomeListViewModel */
     /*
@@ -80,6 +69,10 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        /* copy of original from line 84
+        * _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val root: View = binding.root */
+
         /*
         val textView: TextView = binding.textHome
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
@@ -87,11 +80,71 @@ class HomeFragment : Fragment() {
         })
         */
 
+        getDiscoverJSONArray()
+
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Handler().postDelayed({
+            Log.d("waitTime", "Now waiting for 3 seconds for getDiscoverJSONArray to finish...")
+
+            /* Initialize Recyclerview, LayoutManager, and Adapters */
+            mRecyclerView = view?.findViewById(R.id.homeRecyclerView)
+            mRecyclerView?.setHasFixedSize(true)
+            mRecyclerView?.layoutManager = LinearLayoutManager(context)
+
+            /* Initialize the LayoutManager*/
+            mLayoutManager = LinearLayoutManager(activity)
+
+            //ArrayList of class viewModel
+            val data = ArrayList<Movie>()
+
+            //1 page = 20 movies ***
+            for (i in 0..19) {
+                val movieObj = discoverResult?.getJSONObject(i)
+                Log.d("movieObj", "movieObj num $i has the title: ${movieObj?.getString("title")}")
+
+                //insert the data
+                data.add(Movie(
+                    movieObj?.getInt("id"),
+                    movieObj?.getString("title"),
+                    movieObj?.getString("poster_path"),
+                    movieObj?.getString("backdrop_path"),
+                    movieObj?.getString("overview"),
+                    movieObj?.getString("release_date"),
+                )) //end of adding data
+
+            }
+
+            /* Fill the recyclerview */
+            mRecyclerView?.adapter = HomeAdapter(data)
+            mRecyclerView?.adapter?.notifyDataSetChanged()
+
+        }, 3000) //3 sec
+
+        //ok the new goal now is to find a way to add a new item into the recycler view list
+        // as it is the itemCount is 0, so I have to go and add 1 item...
+
+
+    }
+
+    private fun adapterOnClick() {
+        /*
+        val intent = Intent(activity, movieDisplayActivity::class.java)
+        startActivity(intent)
+        */
+        Toast.makeText(context, "itemOnCLick pressed", Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     * Helper function that helps retrieving the JSONObject from TMDB servers
+     * Runs the following things: Volley, JSONObjectRequest
+     * Modifies the following things: discoverResult
+     */
+    private fun getDiscoverJSONArray() {
 
         // quick testing
         //val movies_url = homeViewModel.discoverMovie_url
@@ -115,42 +168,31 @@ class HomeFragment : Fragment() {
 
 
         val request = JsonObjectRequest(Request.Method.GET,movies_url, null,
-            Response.Listener<JSONObject>{
-            response ->
+            /*Response.Listener<JSONObject>*/ {
+                    response ->
                 Log.d("json", "Success!!")
                 discoverResult = response.getJSONArray("results")
 
-        },
-        Response.ErrorListener {
-            Log.e("json", "Error on retrieveing the JSONArray response")
-        })
+            },
+            /*Response.ErrorListener*/ {
+                Log.e("json", "Error on retrieveing the JSONArray response")
+            })
         //access the requestQueue
         requestQueue.add(request)
-
-
-
-       /* Instantiate Adapters and any UI component */
-        // val homeAdapter = HomeAdapter { movie -> adapterOnClick() }
-
-        // val recyclerView: RecyclerView = getView().findViewById(R.id.homeRecyclerView)
-        // recyclerView.adapter = homeAdapter
-
-        /* add ListViewModel stuff */
-        //the stuff that is in ListViewModel is a global variable
-
-
     }
 
-    private fun adapterOnClick() {
-        /*
-        val intent = Intent(activity, movieDisplayActivity::class.java)
-        startActivity(intent)
-        */
-        Toast.makeText(context, "itemOnCLick pressed", Toast.LENGTH_SHORT).show()
+    /**
+     * Not sure if this is needed, but it feels the data for the first time
+     *
+     */
+    private fun initData() {
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+
 }

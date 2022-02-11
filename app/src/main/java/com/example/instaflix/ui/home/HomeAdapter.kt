@@ -1,84 +1,63 @@
+/* combining these 2 ideas... mostly the first idea but with direct data sent from list provider (fragment calling it)
+* Flower that goes to store in local datastore flower item:
+* https://github.com/android/views-widgets-samples/blob/main/RecyclerViewKotlin/app/src/main/java/com/example/recyclersample/flowerList/FlowersAdapter.kt#L65
+*
+* CustomAdapter example:
+* https://github.com/android/views-widgets-samples/blob/main/RecyclerView/Application/src/main/java/com/example/android/recyclerview/CustomAdapter.java#L76
+*
+*
+* OK time to decide wheter to implement clicking in HomeAdapter (Flower Way) or HomeFragment (CustomAdapter way)
+* whatever it is, Homefragment must give the dataSet information (Array) and the Adapter will handle the numerization
+* at least for primitive datatypes automatically
+*
+* fuck this I will rewrite this class
+*
+* */
 package com.example.instaflix.ui.home
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.instaflix.R
 import com.example.instaflix.data.Movie
+import com.squareup.picasso.Picasso
 
+class HomeAdapter(private val mList: List<Movie>):
+    RecyclerView.Adapter<HomeViewHolder>() {
 
-class HomeAdapter(private val onClick: (Movie) -> Unit ) :
-    ListAdapter<Movie, HomeAdapter.HomeViewHolder>(HomeDiffCallBack) {
-
-    class HomeViewHolder(itemView: View, val onClick: (Movie) -> Unit) :
-        RecyclerView.ViewHolder(itemView) {
-
-        private val movieTitleTextView: TextView =
-            itemView.findViewById(R.id.textView_home_item_title)
-        private val movieImageView: ImageView = itemView.findViewById(R.id.imageView_home_item)
-        private val movieSynopsisTextView: TextView = itemView.findViewById(R.id.textView_home_item_synopsis)
-        private var currentMovie: Movie? = null
-
-        init {
-            itemView.setOnClickListener {
-                currentMovie?.let {
-                    onClick(it)
-                }
-            }
-        }
-
-        /* Bind item's title, image, synopsis */
-        fun bind(movie: Movie) {
-            currentMovie = movie
-
-            /* process movie title */
-            movieTitleTextView.text = movie.title
-
-            /* process movie image */
-            if (movie.poster != null) {
-                movieImageView.setImageResource(movie.poster)
-            } else {
-                movieImageView.setImageResource(R.drawable.account_profile) //add generic movie icon
-            }
-
-            /* process movie synopsis */
-            movieSynopsisTextView.text = movie.synopsis
-
-        }
-
-    }
 
     //create and inflate view and return HomeViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
         val view = LayoutInflater.from(parent.context).
-        inflate(R.layout.home_item, parent, false)
-        return HomeViewHolder(view, onClick)
+                inflate(R.layout.home_item, parent, false)
+
+        return HomeViewHolder(view)
     }
 
     //gets current item
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-        val movie = getItem(position)
-        holder.bind(movie)
+        val itemViewHolder = mList[position]
+
+        //Binding data
+        holder.movieTitleTextView.text = itemViewHolder.title
+        holder.movieSynopsisTextView.text = itemViewHolder.overview
+
+        //binding data for the image
+        val basePath = "https://image.tmdb.org/t/p/w185/"
+        val posterPath = itemViewHolder.posterPath
+        val fullPath = basePath + posterPath
+
+        if (posterPath != "") {
+            Picasso.get().load(fullPath).into(holder.movieImageView)
+        } else {
+            holder.movieImageView.setImageResource(R.drawable.account_profile) //add generic movie icon
+        }
+
     }
 
     override fun getItemCount(): Int {
-        return super.getItemCount()
-    }
 
-    //item object properties and comparison?
-    object HomeDiffCallBack: DiffUtil.ItemCallback<Movie>() {
-        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-            return oldItem == newItem
-        }
-
-        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-            return oldItem.id == newItem.id
-        }
+        return mList.size
     }
 
 }
