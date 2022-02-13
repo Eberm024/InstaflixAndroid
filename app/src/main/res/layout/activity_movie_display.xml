@@ -32,10 +32,11 @@
 
     <TextView
         android:id="@+id/textView_movie_display_title"
-        android:layout_width="234dp"
-        android:layout_height="33dp"
+        android:layout_width="235dp"
+        android:layout_height="104dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:maxLines="3"
+        android:maxLines="4"
         android:minLines="1"
         android:text="Title"
         android:textSize="16sp"
