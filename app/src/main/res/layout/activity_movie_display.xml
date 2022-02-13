@@ -7,23 +7,28 @@
 
     <ImageView
         android:id="@+id/img_movieBackdrop"
-        android:layout_width="395dp"
+        android:layout_width="0dp"
         android:layout_height="235dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
+        android:cropToPadding="false"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        app:srcCompat="@drawable/instaflix_logo"
+        tools:srcCompat="@drawable/instaflix_logo"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/img_movie_display_poster"
         android:layout_width="130dp"
         android:layout_height="205dp"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="18dp"
         android:layout_marginTop="156dp"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView_movie_display_title"
@@ -35,23 +40,29 @@
         android:text="Title"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.789"
         app:layout_constraintStart_toEndOf="@+id/img_movie_display_poster"
-        app:layout_constraintTop_toBottomOf="@+id/img_movieBackdrop" />
+        app:layout_constraintTop_toBottomOf="@+id/img_movieBackdrop"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView_movie_display_description"
         android:layout_width="375dp"
-        android:layout_height="38dp"
+        android:layout_height="0dp"
         android:layout_marginTop="144dp"
+        android:layout_marginBottom="64dp"
         android:maxLines="8"
         android:minLines="1"
         android:text="Title"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_movieBackdrop" />
+        app:layout_constraintTop_toBottomOf="@+id/img_movieBackdrop"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>

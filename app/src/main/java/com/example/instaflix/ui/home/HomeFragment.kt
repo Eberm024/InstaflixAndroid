@@ -30,9 +30,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.instaflix.MovieDisplayActivity
 import com.example.instaflix.R
 import com.example.instaflix.data.Movie
 import com.example.instaflix.databinding.FragmentHomeBinding
+import com.parse.ParseUser
 import org.json.JSONArray
 
 
@@ -104,12 +106,36 @@ class HomeFragment : Fragment() {
 
 
     private fun onListItemClick(position: Int) {
-        /*
-        val intent = Intent(activity, movieDisplayActivity::class.java)
-        startActivity(intent)
-        */
-        Toast.makeText(context, "itemOnCLick pressed: Item location: ${dataArray.get(position)}",
-            Toast.LENGTH_SHORT).show()
+
+        /* I believe the crash bug has to do with intents, so this might be the answer
+        *  by Noelia
+        * https://stackoverflow.com/questions/53355786/kotlin-open-new-activity-inside-of-a-fragment
+        * */
+
+        val intent = Intent(activity, MovieDisplayActivity::class.java)
+        val bundle = requireActivity().getIntent().getExtras()
+        val user: ParseUser = bundle?.get("user") as ParseUser
+        intent.putExtra("user", user)
+
+        val selectedMovie = dataArray.get(position)
+
+        /* for inserting classes and objects that are custom or complex, the Parcelable class needs
+        to be implemented, its time consuming to create and implement too... I also can't pass on
+        an array so its really limited to a few selections */
+
+        // intent.putExtra("MovieArray", dataArray) //cannot do that
+        // intent.putExtra("MoviePosition", position) //cannot do that
+
+        intent.putExtra("CurrentMovieTitle", selectedMovie.title)
+        intent.putExtra("CurrentMovieOverview", selectedMovie.overview)
+        intent.putExtra("CurrentMovieBackdrop", selectedMovie.backdropPath)
+        intent.putExtra("CurrentMoviePoster", selectedMovie.posterPath)
+        intent.putExtra("CurrentMovieReleaseDate", selectedMovie.releaseDate)
+
+        activity?.startActivity(intent)
+
+        // Toast.makeText(context, "itemOnCLick pressed: Item location: ${dataArray.get(position)}",
+        //    Toast.LENGTH_SHORT).show()
     }
 
     /**
