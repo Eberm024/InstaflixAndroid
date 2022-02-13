@@ -35,6 +35,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MovieDisplayActivity"
+            android:exported="true" />
 
         <meta-data
             android:name="com.parse.SERVER_URL"
