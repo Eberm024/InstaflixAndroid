@@ -14,9 +14,9 @@ import com.example.instaflix.R
 class HomeViewHolder(itemView: View, private val onItemClicked: (position: Int) -> Unit) :
     RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-    val movieTitleTextView: TextView = itemView.findViewById(R.id.textView_home_item_title)
-    val movieImageView: ImageView = itemView.findViewById(R.id.imageView_home_item)
-    val movieSynopsisTextView: TextView = itemView.findViewById(R.id.textView_home_item_synopsis)
+    val movieTitleTextView: TextView = itemView.findViewById(R.id.textView_movie_item_title)
+    val movieImageView: ImageView = itemView.findViewById(R.id.imageView_movie_item)
+    val movieDescriptionTextView: TextView = itemView.findViewById(R.id.textView_movie_item_description)
 
     init {
         itemView.setOnClickListener(this)

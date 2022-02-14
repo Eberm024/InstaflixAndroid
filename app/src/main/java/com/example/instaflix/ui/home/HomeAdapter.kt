@@ -15,7 +15,7 @@ class HomeAdapter(private val mList: List<Movie>, private val onItemClicked: (po
     //create and inflate view and return HomeViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
         val view = LayoutInflater.from(parent.context).
-                inflate(R.layout.home_item, parent, false)
+                inflate(R.layout.movie_item, parent, false)
 
         return HomeViewHolder(view, onItemClicked)
     }
@@ -26,7 +26,7 @@ class HomeAdapter(private val mList: List<Movie>, private val onItemClicked: (po
 
         //Binding data
         holder.movieTitleTextView.text = itemViewHolder.title
-        holder.movieSynopsisTextView.text = itemViewHolder.overview
+        holder.movieDescriptionTextView.text = itemViewHolder.overview
 
         //binding data for the image
         val basePath = "https://image.tmdb.org/t/p/w185/"
