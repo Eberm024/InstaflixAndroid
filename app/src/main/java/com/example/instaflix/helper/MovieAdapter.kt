@@ -1,5 +1,5 @@
 
-package com.example.instaflix.ui.home
+package com.example.instaflix.helper
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,20 +8,20 @@ import com.example.instaflix.R
 import com.example.instaflix.data.Movie
 import com.squareup.picasso.Picasso
 
-class HomeAdapter(private val mList: List<Movie>, private val onItemClicked: (position: Int) -> Unit):
-    RecyclerView.Adapter<HomeViewHolder>() {
+class MovieAdapter(private val mList: List<Movie>, private val onItemClicked: (position: Int) -> Unit):
+    RecyclerView.Adapter<MovieViewHolder>() {
 
 
-    //create and inflate view and return HomeViewHolder
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
+    //create and inflate view and return MovieViewHolder
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view = LayoutInflater.from(parent.context).
                 inflate(R.layout.movie_item, parent, false)
 
-        return HomeViewHolder(view, onItemClicked)
+        return MovieViewHolder(view, onItemClicked)
     }
 
     //gets current item
-    override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val itemViewHolder = mList[position]
 
         //Binding data
