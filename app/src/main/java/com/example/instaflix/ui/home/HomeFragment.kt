@@ -22,7 +22,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,8 +33,11 @@ import com.example.instaflix.MovieDisplayActivity
 import com.example.instaflix.R
 import com.example.instaflix.data.Movie
 import com.example.instaflix.databinding.FragmentHomeBinding
+import com.example.instaflix.helper.MovieAdapter
 import com.parse.ParseUser
 import org.json.JSONArray
+import org.json.JSONException
+import java.lang.IndexOutOfBoundsException
 
 
 class HomeFragment : Fragment() {
@@ -46,6 +48,7 @@ class HomeFragment : Fragment() {
     private var mRecyclerView: RecyclerView? = null
     private var mLayoutManager: RecyclerView.LayoutManager? = null
     var dataArray = ArrayList<Movie>()
+    private var pageNum: Int = 1
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -84,22 +87,27 @@ class HomeFragment : Fragment() {
 
             //1 page = 20 movies ***
             for (i in 0..19) {
-                val movieObj = discoverResult?.getJSONObject(i)
-                Log.d("movieObj", "movieObj num $i has the title: ${movieObj?.getString("title")}")
+                try {
+                    val movieObj = discoverResult?.getJSONObject(i)
+                    Log.d("movieObj", "movieObj num $i has the title: ${movieObj?.getString("title")}")
 
-                //insert the data
-                dataArray.add(Movie(
-                    movieObj?.getInt("id"),
-                    movieObj?.getString("title"),
-                    movieObj?.getString("poster_path"),
-                    movieObj?.getString("backdrop_path"),
-                    movieObj?.getString("overview"),
-                    movieObj?.getString("release_date"),
-                )) //end of adding data
+                    dataArray.add(Movie(
+                        movieObj?.getInt("id"),
+                        movieObj?.getString("title"),
+                        movieObj?.getString("poster_path"),
+                        movieObj?.getString("backdrop_path"),
+                        movieObj?.getString("overview"),
+                        movieObj?.getString("release_date"),
+                    )) //end of adding data
+
+                }
+                catch (exception: JSONException) {
+                    Log.e("movieObj", "Error adding movie, skipping faulty movie")
+                }
             }
 
             /* Fill the recyclerview */
-            mRecyclerView?.adapter = HomeAdapter(dataArray) {position -> onListItemClick(position) }
+            mRecyclerView?.adapter = MovieAdapter(dataArray) { position -> onListItemClick(position) }
 
         }, 2000) //2 sec
     }
@@ -152,7 +160,7 @@ class HomeFragment : Fragment() {
                     "&sort_by=popularity.desc" +
                     "&include_adult=false" +
                     "&include_video=false" +
-                    "&page=1" +
+                    "&page=$pageNum" +
                     "&with_watch_monetization_types=flatrate"
 
         Log.d("movies_url", "The movie url is below:\n $movies_url")

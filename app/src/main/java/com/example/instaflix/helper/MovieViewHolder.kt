@@ -1,4 +1,4 @@
-package com.example.instaflix.ui.home
+package com.example.instaflix.helper
 
 import android.view.View
 import android.widget.ImageView
@@ -11,12 +11,12 @@ import com.example.instaflix.R
  * contains UI information about one item in RecyclerView.
  * This class can be in a separate class or inside RecyclerViewAdapter class
  * */
-class HomeViewHolder(itemView: View, private val onItemClicked: (position: Int) -> Unit) :
+class MovieViewHolder(itemView: View, private val onItemClicked: (position: Int) -> Unit) :
     RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-    val movieTitleTextView: TextView = itemView.findViewById(R.id.textView_home_item_title)
-    val movieImageView: ImageView = itemView.findViewById(R.id.imageView_home_item)
-    val movieSynopsisTextView: TextView = itemView.findViewById(R.id.textView_home_item_synopsis)
+    val movieTitleTextView: TextView = itemView.findViewById(R.id.textView_movie_item_title)
+    val movieImageView: ImageView = itemView.findViewById(R.id.imageView_movie_item)
+    val movieDescriptionTextView: TextView = itemView.findViewById(R.id.textView_movie_item_description)
 
     init {
         itemView.setOnClickListener(this)
