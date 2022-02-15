@@ -7,12 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -55,12 +52,6 @@ class SearchFragment : Fragment() {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        /*
-        val textView: TextView = binding.textDashboard
-        searchViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        */
         return root
     }
 
@@ -79,6 +70,9 @@ class SearchFragment : Fragment() {
     }
 
     private fun onClickSearchBarButton() {
+
+        /* wipe any existing data the recyclerview data has */
+        dataArray.removeAll(dataArray)
 
         Log.d("waitTime", "Now waiting for 2 seconds for getDiscoverJSONArray to finish...")
 
@@ -139,9 +133,6 @@ class SearchFragment : Fragment() {
         intent.putExtra("CurrentMovieReleaseDate", selectedMovie.releaseDate)
 
         activity?.startActivity(intent)
-
-        // Toast.makeText(context, "itemOnCLick pressed: Item location: ${dataArray.get(position)}",
-        //    Toast.LENGTH_SHORT).show()
     }
 
     /**
@@ -176,7 +167,7 @@ class SearchFragment : Fragment() {
             /*Response.ErrorListener*/ {
                 Log.e("json", "Error on retrieving the JSONArray response")
             })
-        //access the requestQueue
+
         requestQueue.add(request)
     }
 
