@@ -134,6 +134,7 @@ class HomeFragment : Fragment() {
         // intent.putExtra("MovieArray", dataArray) //cannot do that
         // intent.putExtra("MoviePosition", position) //cannot do that
 
+        intent.putExtra("CurrentMovieId", selectedMovie.id)
         intent.putExtra("CurrentMovieTitle", selectedMovie.title)
         intent.putExtra("CurrentMovieOverview", selectedMovie.overview)
         intent.putExtra("CurrentMovieBackdrop", selectedMovie.backdropPath)
