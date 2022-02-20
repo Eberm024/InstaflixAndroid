@@ -98,12 +98,15 @@
         android:layout_width="335dp"
         android:layout_height="51dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/ic_launcher_background_white"
         android:ems="10"
         android:hint="Type your comment..."
         android:inputType="textNoSuggestions|textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/commentsRecyclerView" />
 
     <ImageButton
         android:id="@+id/imageButton_movie_display_new_comment_send"

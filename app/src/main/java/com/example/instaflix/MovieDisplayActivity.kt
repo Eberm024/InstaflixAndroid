@@ -59,19 +59,29 @@ class MovieDisplayActivity: AppCompatActivity() {
         Log.d("CommentTraverse", "traverse: $traverse")
         for (i in 0..traverse) {
             val movieId = queryResult?.get(i)?.getInt("movieId")
-            Log.d("movieId", "movieId: $movieId")
+            //Log.d("movieId", "movieId: $movieId")
 
             val commentText = queryResult?.get(i)?.getString("text")
-            Log.d("commentText", "commentText: $commentText")
+            //Log.d("commentText", "commentText: $commentText")
 
             val author = queryResult?.get(i)?.getParseUser("author")
-            Log.d("author", "author: $author")  //I need to run some fetchIfNeeded call for the username
+            //Log.d("author", "author: $author")  //I need to run some fetchIfNeeded call for the username
             //the Author is a pointer EX:  com.parse.ParseUser@8f20bc
+            val fetchedAuthor = author?.fetchIfNeeded() //background would be the appropriate way if possible,
+            // but I need that data now or else race condition issues appears leading to errors
+            //Log.d("author", "fetchedAuthor: ${fetchedAuthor?.username}")
+
+            dataArray.add(Comment(
+                movieId!!,
+                commentText!!,
+                fetchedAuthor!!
+            ))
+
         }
 
         //after loops
         /* Fill the recyclerview */
-        //mRecyclerView?.adapter = CommentAdapter(dataArray)
+        mRecyclerView?.adapter = CommentAdapter(dataArray)
 
     }
 
