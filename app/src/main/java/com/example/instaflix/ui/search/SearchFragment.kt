@@ -126,6 +126,7 @@ class SearchFragment : Fragment() {
 
         val selectedMovie = dataArray.get(position)
 
+        intent.putExtra("CurrentMovieId", selectedMovie.id)
         intent.putExtra("CurrentMovieTitle", selectedMovie.title)
         intent.putExtra("CurrentMovieOverview", selectedMovie.overview)
         intent.putExtra("CurrentMovieBackdrop", selectedMovie.backdropPath)
