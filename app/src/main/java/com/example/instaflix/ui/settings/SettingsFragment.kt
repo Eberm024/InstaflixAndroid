@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -14,7 +15,9 @@ import com.example.instaflix.ProgressBarDialogFragment
 import com.example.instaflix.databinding.FragmentSettingsBinding
 import com.example.instaflix.R
 import com.parse.ParseException
+import com.parse.ParseFile
 import com.parse.ParseUser
+import com.squareup.picasso.Picasso
 
 class SettingsFragment : Fragment() {
 
@@ -36,10 +39,6 @@ class SettingsFragment : Fragment() {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        settingsViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
         return root
     }
 
@@ -52,13 +51,20 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //buttons for the fragment
-        val logoutButton: Button = requireActivity().findViewById<Button>(R.id.btn_logout)
+        val logoutButton: Button = requireActivity().findViewById<Button>(R.id.btn_settings_logout)
         val usernameTextView: TextView =
-            requireActivity().findViewById<TextView>(R.id.txt_username)
+            requireActivity().findViewById<TextView>(R.id.textView_settings_username)
+        val profileImageView: ImageView = requireActivity().findViewById(R.id.imageView_settings_profile)
 
-        var bundle = requireActivity().getIntent().getExtras()
-        val user: ParseUser = bundle?.get("user") as ParseUser
+        val user: ParseUser = ParseUser.getCurrentUser()
         usernameTextView.text = user.username
+
+        val profilePicture = user.get("profilePicture") as ParseFile
+        if (profilePicture != null) {
+            Picasso.get().load(profilePicture.url).into(profileImageView)
+        } else {
+            profileImageView.setImageResource(R.drawable.account_profile)
+        }
 
         logoutButton.setOnClickListener {
             onClickLogout()
