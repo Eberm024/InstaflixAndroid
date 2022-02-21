@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.instaflix.ProgressBarDialogFragment
 import com.example.instaflix.R
 import com.example.instaflix.data.Comment
+import com.parse.ParseFile
 import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
@@ -39,11 +40,13 @@ class CommentAdapter (private val mList: List<Comment>):
         */
 
         /* query for User */
-        val queryResult: ParseObject? = getAuthorObject(itemViewHolder.author)
+        //val queryResult: ParseObject? = getAuthorObject(itemViewHolder.author)
+        val user = ParseUser.getCurrentUser()
         //image profile
-        val profilePicture = queryResult?.getParseFile("profilePicture")
+        //val profilePicture = queryResult?.getParseFile("profilePicture")
+        val profilePicture = user.get("profilePicture") as ParseFile
         if (profilePicture != null) {
-            //Picasso.get().load(File()).into(holder.movieImageView)
+            Picasso.get().load(profilePicture.url).into(holder.commentImageView)
         } else {
             holder.commentImageView.setImageResource(R.drawable.account_profile) //add generic movie icon
         }
