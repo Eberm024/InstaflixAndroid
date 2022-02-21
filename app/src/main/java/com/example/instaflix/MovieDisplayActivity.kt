@@ -59,17 +59,9 @@ class MovieDisplayActivity: AppCompatActivity() {
         Log.d("CommentTraverse", "traverse: $traverse")
         for (i in 0..traverse) {
             val movieId = queryResult?.get(i)?.getInt("movieId")
-            //Log.d("movieId", "movieId: $movieId")
-
             val commentText = queryResult?.get(i)?.getString("text")
-            //Log.d("commentText", "commentText: $commentText")
-
             val author = queryResult?.get(i)?.getParseUser("author")
-            //Log.d("author", "author: $author")  //I need to run some fetchIfNeeded call for the username
-            //the Author is a pointer EX:  com.parse.ParseUser@8f20bc
             val fetchedAuthor = author?.fetchIfNeeded() //background would be the appropriate way if possible,
-            // but I need that data now or else race condition issues appears leading to errors
-            //Log.d("author", "fetchedAuthor: ${fetchedAuthor?.username}")
 
             dataArray.add(Comment(
                 movieId!!,
@@ -96,7 +88,6 @@ class MovieDisplayActivity: AppCompatActivity() {
         val progressBar = ProgressBarDialogFragment()
         progressBar.show(supportFragmentManager, "progressBar")
         val query = ParseQuery.getQuery<ParseObject>("MovieComments")
-        //query.orderByDescending("createdAt")
         query.whereEqualTo("movieId", currentMovieId)
 
         query.findInBackground {objects, e ->
@@ -137,16 +128,9 @@ class MovieDisplayActivity: AppCompatActivity() {
         comment.put("author", user)
 
         /* saveInBackground (run the api call) */
-
-        //sign up the ParseUser or Log in?
-        /* error on saving data in saveInBackground method: java.lang.IllegalArgumentException:
-         Cannot save a ParseUser until it has been signed up. Call signUp first. */
-
-        //alertDialog
         val progressBar = ProgressBarDialogFragment()
         progressBar.show(supportFragmentManager, "progressBar")
         comment.saveInBackground { e ->
-            //dismiss the progressBarDialog
             progressBar.dismiss()
 
             if(e == null) {

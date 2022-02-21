@@ -115,11 +115,6 @@ class HomeFragment : Fragment() {
 
     private fun onListItemClick(position: Int) {
 
-        /* I believe the crash bug has to do with intents, so this might be the answer
-        *  by Noelia
-        * https://stackoverflow.com/questions/53355786/kotlin-open-new-activity-inside-of-a-fragment
-        * */
-
         val intent = Intent(activity, MovieDisplayActivity::class.java)
         val bundle = requireActivity().getIntent().getExtras()
         val user: ParseUser = bundle?.get("user") as ParseUser
