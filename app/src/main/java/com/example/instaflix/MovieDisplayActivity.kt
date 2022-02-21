@@ -128,8 +128,8 @@ class MovieDisplayActivity: AppCompatActivity() {
 
         /* fill the object */
         val bundle = this.getIntent().getExtras()
-        val userComment = findViewById<TextView>(R.id.textView_comment_item_commentText)
-        val user: ParseUser = bundle?.get("user") as ParseUser
+        val userComment = findViewById<TextView>(R.id.editText_movie_display_new_comment)
+        val user: ParseUser = ParseUser.getCurrentUser()
         val currentMovieId: Int = bundle?.get("CurrentMovieId") as Int
 
         comment.put("movieId", currentMovieId)
@@ -137,10 +137,14 @@ class MovieDisplayActivity: AppCompatActivity() {
         comment.put("author", user)
 
         /* saveInBackground (run the api call) */
+
+        //sign up the ParseUser or Log in?
+        /* error on saving data in saveInBackground method: java.lang.IllegalArgumentException:
+         Cannot save a ParseUser until it has been signed up. Call signUp first. */
+
         //alertDialog
         val progressBar = ProgressBarDialogFragment()
         progressBar.show(supportFragmentManager, "progressBar")
-        // call the progressBarDialog
         comment.saveInBackground { e ->
             //dismiss the progressBarDialog
             progressBar.dismiss()
