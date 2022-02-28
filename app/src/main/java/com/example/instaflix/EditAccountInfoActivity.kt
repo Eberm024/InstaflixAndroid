@@ -49,6 +49,10 @@ class EditAccountInfoActivity : AppCompatActivity() {
             btnConfirmOnClick()
         }
 
+        editProfileImageButton?.setOnClickListener {
+            btnImageOnClick()
+        }
+
     }
 
     private fun btnCancelOnClick() {
@@ -63,25 +67,6 @@ class EditAccountInfoActivity : AppCompatActivity() {
         //alertDialog
         val progressBarFragment = ProgressBarDialogFragment()
         progressBarFragment?.show(supportFragmentManager, "progressBar")
-
-        //attempt a login and if that doesn't work then password is wrong
-        ParseUser.logInInBackground(user.username, previousPasswordEditText?.text.toString())
-        { parseUser: ParseUser?,
-          error: ParseException? ->
-            if (parseUser != null) {
-                Log.d("ParseLogin", "correct previous password")
-            }
-            else {
-                Toast.makeText(this, "Incorrect previous password", Toast.LENGTH_SHORT)
-                failedLogin = true
-            }
-        }
-
-        //check any other entries and properties
-        if(failedLogin) {
-            progressBarFragment.dismiss()
-            return
-        }
 
         if(usernameEditText?.text.toString() != "") {
             //Update username
@@ -111,7 +96,7 @@ class EditAccountInfoActivity : AppCompatActivity() {
                 Log.d("bitmapComparison", "It is the default image, do not update image")
             }
             else {
-                //Update call for Parse Back4app
+                //Update File for Parse Back4app
             }
         }
 
@@ -129,9 +114,10 @@ class EditAccountInfoActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT).show()
                 Log.e("ParseObjectSave", "Error on saving user object: ${error.message}")
             }
-
         }
-
     }
 
+    private fun btnImageOnClick() {
+        //trigger the image upload stuff
+    }
 }
