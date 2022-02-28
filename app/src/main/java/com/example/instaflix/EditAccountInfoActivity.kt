@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
@@ -37,16 +38,31 @@ class EditAccountInfoActivity : AppCompatActivity() {
             findViewById<EditText>(R.id.editText_edit_account_new_password_confirm)
         editProfileImageButton = findViewById<ImageButton>(R.id.imageButton_edit_account_profile)
 
+        val btnCancel = findViewById<Button>(R.id.btn_edit_account_cancel)
+        val btnConfirm = findViewById<Button>(R.id.btn_edit_account_confirm)
+
+        btnCancel.setOnClickListener {
+            btnCancelOnClick();
+        }
+
+        btnConfirm.setOnClickListener {
+            btnConfirmOnClick()
+        }
+
     }
 
-    private fun btnCancelOnClick(view: View) {
+    private fun btnCancelOnClick() {
         //return to last screen, kill current activity
     }
 
-    private fun btnConfirmOnClick(view: View) {
+    private fun btnConfirmOnClick() {
         //check inputs of the text fields and apply accordingly
         var failedLogin = false
         val user = ParseUser.getCurrentUser()
+
+        //alertDialog
+        val progressBarFragment = ProgressBarDialogFragment()
+        progressBarFragment?.show(supportFragmentManager, "progressBar")
 
         //attempt a login and if that doesn't work then password is wrong
         ParseUser.logInInBackground(user.username, previousPasswordEditText?.text.toString())
@@ -63,17 +79,21 @@ class EditAccountInfoActivity : AppCompatActivity() {
 
         //check any other entries and properties
         if(failedLogin) {
+            progressBarFragment.dismiss()
             return
         }
 
         if(usernameEditText?.text.toString() != "") {
-            //Update call for Parse Back4app
+            //Update username
+            user.username = usernameEditText?.text.toString()
         }
         if(emailEditText?.text.toString() != "") {
-            //Update call for Parse Back4app
+            //Update email
+            user.email = emailEditText?.text.toString()
         }
         if(newPasswordEditText?.text.toString() == newPasswordConfirmEditText?.text.toString()) {
-            //Update call for Parse Back4app
+            //Update password
+            user.setPassword(newPasswordConfirmEditText?.text.toString())
 
         }
         //compare if editImage id is the same as the default account image
@@ -94,6 +114,24 @@ class EditAccountInfoActivity : AppCompatActivity() {
                 //Update call for Parse Back4app
             }
         }
+
+        //Save Object
+        user.saveInBackground { error ->
+            //dismiss
+            progressBarFragment.dismiss()
+            if(error == null) {
+                Toast.makeText(this, "Success on saving user info!",
+                    Toast.LENGTH_SHORT).show()
+                Log.d("ParseObjectSave", "saving user object successful!")
+            }
+            else {
+                Toast.makeText(this, "Error on saving account info, try again later",
+                    Toast.LENGTH_SHORT).show()
+                Log.e("ParseObjectSave", "Error on saving user object: ${error.message}")
+            }
+
+        }
+
     }
 
 }
