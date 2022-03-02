@@ -100,7 +100,6 @@ class EditAccountInfoActivity : AppCompatActivity() {
 
     private fun btnConfirmOnClick() {
         //check inputs of the text fields and apply accordingly
-        var failedLogin = false
         val user = ParseUser.getCurrentUser()
 
         //alertDialog
