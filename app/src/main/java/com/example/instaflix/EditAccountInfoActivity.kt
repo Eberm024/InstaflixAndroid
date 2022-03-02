@@ -1,20 +1,33 @@
 package com.example.instaflix
 
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.decodeBitmap
 import androidx.core.graphics.drawable.toBitmap
-import com.parse.Parse
-import com.parse.ParseException
-import com.parse.ParseUser
+import com.parse.*
+import com.squareup.picasso.Picasso
+import java.io.ByteArrayOutputStream
 
 class EditAccountInfoActivity : AppCompatActivity() {
 
@@ -24,6 +37,31 @@ class EditAccountInfoActivity : AppCompatActivity() {
     private var newPasswordEditText: EditText? = null
     private var newPasswordConfirmEditText: EditText? = null
     private var editProfileImageButton: ImageButton? = null
+
+    private val REQUEST_EXTERNAL_STORAGE = 1
+    private val PERMISSION_STORAGE = arrayOf<String>( Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE )
+
+    private var selectedImageBytes: ByteArray? = null
+
+    val startForResults = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val intent = result.data
+
+            //Handle Intent
+            val selectedImageUri = intent?.data
+            val source = selectedImageUri?.let { ImageDecoder.createSource(contentResolver, it) }
+            editProfileImageButton?.foreground = source?.let { ImageDecoder.decodeDrawable(it) }
+
+
+            //convert bitmap directly to bytesArray, and save the data for user later
+            val bitmapCurrentImage = editProfileImageButton?.foreground?.toBitmap()
+            val baos = ByteArrayOutputStream()
+            bitmapCurrentImage?.compress(Bitmap.CompressFormat.PNG, 100, baos)
+            selectedImageBytes = baos.toByteArray()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +95,7 @@ class EditAccountInfoActivity : AppCompatActivity() {
 
     private fun btnCancelOnClick() {
         //return to last screen, kill current activity
+        finish()
     }
 
     private fun btnConfirmOnClick() {
@@ -97,6 +136,10 @@ class EditAccountInfoActivity : AppCompatActivity() {
             }
             else {
                 //Update File for Parse Back4app
+                Log.d("BitmapComparison", "It is a new image, update image in Back4App servers")
+                val file = ParseFile( "${user.username}_profile.png", selectedImageBytes)
+                file.saveInBackground()
+                user.put("profilePicture",file)
             }
         }
 
@@ -118,6 +161,27 @@ class EditAccountInfoActivity : AppCompatActivity() {
     }
 
     private fun btnImageOnClick() {
+        uploadTask()
+    }
+
+    private fun uploadTask() {
         //trigger the image upload stuff
+        val mode = Manifest.permission.READ_EXTERNAL_STORAGE
+        verifyStoragePermissions(this)
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.setType("image/*")
+        startForResults.launch(Intent.createChooser(intent, "Open Gallery"))
+    }
+
+    private fun verifyStoragePermissions(activity: Activity) {
+        val permission = ActivityCompat.checkSelfPermission(activity,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+        if(permission != PackageManager.PERMISSION_GRANTED) {
+            //if we are in here, then we don't have permissions, so we prompt the user
+            ActivityCompat.requestPermissions(activity,
+                PERMISSION_STORAGE,
+                REQUEST_EXTERNAL_STORAGE)
+        }
     }
 }
