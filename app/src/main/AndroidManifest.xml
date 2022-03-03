@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Instaflix">
         <activity
+            android:name=".EditAccountInfoActivity"
+            android:exported="false" />
+        <activity
             android:name=".HomeActivity"
             android:exported="false"
             android:label="@string/title_activity_home" />
