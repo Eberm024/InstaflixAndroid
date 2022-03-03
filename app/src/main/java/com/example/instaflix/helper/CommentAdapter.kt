@@ -32,8 +32,7 @@ class CommentAdapter (private val mList: List<Comment>):
         holder.commentTextTextView.text = itemViewHolder.text
         holder.commentUsernameTextView.text = itemViewHolder.author.username.toString()
 
-        val user = ParseUser.getCurrentUser()
-        val profilePicture = user.get("profilePicture") as ParseFile
+        val profilePicture = itemViewHolder.author.get("profilePicture") as ParseFile
         if (profilePicture != null) {
             Picasso.get().load(profilePicture.url).into(holder.commentImageView)
         } else {
