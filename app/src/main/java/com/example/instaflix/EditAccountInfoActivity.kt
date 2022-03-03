@@ -114,7 +114,9 @@ class EditAccountInfoActivity : AppCompatActivity() {
             //Update email
             user.email = emailEditText?.text.toString()
         }
-        if(newPasswordEditText?.text.toString() == newPasswordConfirmEditText?.text.toString()) {
+        if(newPasswordEditText?.text.toString() == newPasswordConfirmEditText?.text.toString()
+            && newPasswordEditText?.text.toString() != ""
+            && newPasswordConfirmEditText?.text.toString() != "" ) {
             //Update password
             user.setPassword(newPasswordConfirmEditText?.text.toString())
 
