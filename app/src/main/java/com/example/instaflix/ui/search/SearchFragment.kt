@@ -65,12 +65,6 @@ class SearchFragment : Fragment() {
             onClickSearchBarButton()
         }
     }
-    /*  Caused by: android.view.InflateException: Binary XML file line #34 in com.example.instaflix:layout/activity_home: Binary XML file line #34 in com.example.instaflix:layout/activity_home: Error inflating class fragment
-     Caused by: android.view.InflateException: Binary XML file line #34 in com.example.instaflix:layout/activity_home: Error inflating class fragment
-     Caused by: java.lang.NullPointerException: requireActivity().findVi…(R.id.imagebutton_search) must not be null
-        at com.example.instaflix.ui.search.SearchFragment.onViewCreated(SearchFragment.kt:62)
-         FULL: java.lang.RuntimeException: Unable to start activity ComponentInfo{com.example.instaflix/com.example.instaflix.HomeActivity}: android.view.InflateException: Binary XML file line #34 in com.example.instaflix:layout/activity_home: Binary XML file line #34 in com.example.instaflix:layout/activity_home: Error inflating class fragment
-         */
 
     private fun onClickSearchBarButton() {
 
