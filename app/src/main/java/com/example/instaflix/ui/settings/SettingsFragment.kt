@@ -10,10 +10,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.instaflix.EditAccountInfoActivity
-import com.example.instaflix.MovieDisplayActivity
 import com.example.instaflix.ProgressBarDialogFragment
 import com.example.instaflix.databinding.FragmentSettingsBinding
 import com.example.instaflix.R
@@ -81,9 +79,9 @@ class SettingsFragment : Fragment() {
 
     private fun onClickLogout() {
         val newFragment = ProgressBarDialogFragment()
-        newFragment?.show(childFragmentManager, "progressBar")
+        newFragment.show(childFragmentManager, "progressBar")
         ParseUser.logOutInBackground {e: ParseException? ->
-            newFragment?.dismiss()
+            newFragment.dismiss()
             if (e == null) {
                 Toast.makeText(activity, "Sign out successful", Toast.LENGTH_SHORT).show()
                 requireActivity().finish()

@@ -31,6 +31,7 @@ class SearchFragment : Fragment() {
     private lateinit var searchViewModel: SearchViewModel
     private var _binding: FragmentSearchBinding? = null
     var dataArray = ArrayList<Movie>()
+    private var searchbarButton: ImageButton? = null
     private var searchResult: JSONArray? = null
     private var mRecyclerView: RecyclerView? = null
     private var mLayoutManager: RecyclerView.LayoutManager? = null
@@ -59,15 +60,17 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //buttons for the fragment
-        val searchbarButton: ImageButton = requireActivity().findViewById<ImageButton>(R.id.imagebutton_search)
-
-        var bundle = requireActivity().getIntent().getExtras()
-        val user: ParseUser = bundle?.get("user") as ParseUser
-
-        searchbarButton.setOnClickListener {
+        searchbarButton = requireActivity().findViewById<ImageButton>(R.id.imagebutton_search) //bug found
+        searchbarButton?.setOnClickListener {
             onClickSearchBarButton()
         }
     }
+    /*  Caused by: android.view.InflateException: Binary XML file line #34 in com.example.instaflix:layout/activity_home: Binary XML file line #34 in com.example.instaflix:layout/activity_home: Error inflating class fragment
+     Caused by: android.view.InflateException: Binary XML file line #34 in com.example.instaflix:layout/activity_home: Error inflating class fragment
+     Caused by: java.lang.NullPointerException: requireActivity().findVi…(R.id.imagebutton_search) must not be null
+        at com.example.instaflix.ui.search.SearchFragment.onViewCreated(SearchFragment.kt:62)
+         FULL: java.lang.RuntimeException: Unable to start activity ComponentInfo{com.example.instaflix/com.example.instaflix.HomeActivity}: android.view.InflateException: Binary XML file line #34 in com.example.instaflix:layout/activity_home: Binary XML file line #34 in com.example.instaflix:layout/activity_home: Error inflating class fragment
+         */
 
     private fun onClickSearchBarButton() {
 
@@ -84,8 +87,8 @@ class SearchFragment : Fragment() {
         /* Initialize the LayoutManager*/
         mLayoutManager = LinearLayoutManager(activity)
 
-        val editText_search = requireActivity().findViewById<EditText>(R.id.textView_searchbar)
-        textInput = editText_search.text.toString()
+        val editTextSearch = requireActivity().findViewById<EditText>(R.id.textView_searchbar)
+        textInput = editTextSearch.text.toString()
 
         getResultJSONArray()
 
@@ -145,20 +148,20 @@ class SearchFragment : Fragment() {
 
         val encodedString = URLEncoder.encode(textInput, "utf-8")
 
-        val movies_url = "https://api.themoviedb.org/3/search/movie?" +
+        val moviesUrl = "https://api.themoviedb.org/3/search/movie?" +
                 "api_key=${getString(R.string.tmdb_app_key)}" +
                 "&language=en-US" +
                 "&query=$encodedString" +
                 "&page=$pageNum" +
                 "&include_adult=false"
 
-        Log.d("movies_url", "The movie url is below:\n $movies_url")
+        Log.d("movies_url", "The movie url is below:\n $moviesUrl")
 
         /* Volley Request for getting JSON response */
         val requestQueue = Volley.newRequestQueue(activity)
 
         val request = JsonObjectRequest(
-            Request.Method.GET,movies_url, null,
+            Request.Method.GET,moviesUrl, null,
             /*Response.Listener<JSONObject>*/ {
                     response ->
                 Log.d("json", "Success!!")
