@@ -24,9 +24,9 @@ class MovieDisplayActivity: AppCompatActivity() {
 
     private var mRecyclerView: RecyclerView? = null
     private var mLayoutManager: RecyclerView.LayoutManager? = null
-    var dataArray = ArrayList<Comment>()
-    var queryResult: List<ParseObject>? = null
-    var queryResultSize: Int = 0
+    private var dataArray = ArrayList<Comment>()
+    private var queryResult: List<ParseObject>? = null
+    private var queryResultSize: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

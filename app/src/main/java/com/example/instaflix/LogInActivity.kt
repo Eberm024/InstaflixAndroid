@@ -40,10 +40,10 @@ class LogInActivity : AppCompatActivity() {
 
             //alertDialog
             val newFragment = ProgressBarDialogFragment()
-            newFragment?.show(supportFragmentManager, "progressBar")
+            newFragment.show(supportFragmentManager, "progressBar")
 
             user.signUpInBackground(SignUpCallback { error ->
-                newFragment?.dismiss()
+                newFragment.dismiss()
 
                 if (error == null) {
                     Toast.makeText(applicationContext, "Sign Up completed", Toast.LENGTH_LONG)
@@ -68,28 +68,17 @@ class LogInActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, "Log In Button Clicked", Toast.LENGTH_LONG)
                 .show()
 
-            val username = editTextUsername.getText().toString()
-            val pass = editTextPassword.getText().toString()
+            val username = editTextUsername.text.toString()
+            val pass = editTextPassword.text.toString()
             val user = ParseUser()
             user.username = username
             user.setPassword(pass)
 
             //alertDialog
             val newFragment = ProgressBarDialogFragment()
-            newFragment?.show(supportFragmentManager, "progressBar")
+            newFragment.show(supportFragmentManager, "progressBar")
 
-
-            /* this works, I was missing some alertDialog (progressBarDialog got deprecated)
-            to stop the app so that it could finish
-            loading in.
-
-            UPDATE:
-             Soo apparently back4app/parse cannot respond properly so I will make a dev mode to bypass the
-             log in page. I have tested this feature multiple times and it has been confirmed that it works.
-             But sometimes the it does not want to do the log in... so it could be Parse API issues.
-             */
-
-            /* created dev user to bypass API log in becuase it may not work all the time */
+            /* dev mode user to bypass API log in because it may not work all the time */
             if(username == "dev" && pass == "dev") {
                 val intent = Intent(this@LogInActivity, HomeActivity::class.java)
                 intent.putExtra("user", user)
@@ -98,7 +87,7 @@ class LogInActivity : AppCompatActivity() {
             else { // remove else but do not remove the contents inside of it when I finish the APP
                 ParseUser.logInInBackground(username, pass) { parseUser: ParseUser?,
                                                               parseException: ParseException? ->
-                    newFragment?.dismiss()
+                    newFragment.dismiss()
                     if (parseUser != null) {
                         val intent = Intent(this@LogInActivity, HomeActivity::class.java)
                         intent.putExtra("user", user)

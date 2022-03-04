@@ -1,16 +1,11 @@
 package com.example.instaflix.helper
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.instaflix.ProgressBarDialogFragment
 import com.example.instaflix.R
 import com.example.instaflix.data.Comment
 import com.parse.ParseFile
-import com.parse.ParseObject
-import com.parse.ParseQuery
-import com.parse.ParseUser
 import com.squareup.picasso.Picasso
 
 class CommentAdapter (private val mList: List<Comment>):
@@ -32,7 +27,7 @@ class CommentAdapter (private val mList: List<Comment>):
         holder.commentTextTextView.text = itemViewHolder.text
         holder.commentUsernameTextView.text = itemViewHolder.author.username.toString()
 
-        val profilePicture = itemViewHolder.author.get("profilePicture") as ParseFile
+        val profilePicture = itemViewHolder.author.get("profilePicture") as ParseFile?
         if (profilePicture != null) {
             Picasso.get().load(profilePicture.url).into(holder.commentImageView)
         } else {

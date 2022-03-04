@@ -37,8 +37,6 @@ import com.example.instaflix.helper.MovieAdapter
 import com.parse.ParseUser
 import org.json.JSONArray
 import org.json.JSONException
-import java.lang.IndexOutOfBoundsException
-
 
 class HomeFragment : Fragment() {
 
@@ -59,16 +57,12 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         /* Handle any data in here */
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         getDiscoverJSONArray()
-
         return root
     }
 
@@ -89,7 +83,8 @@ class HomeFragment : Fragment() {
             for (i in 0..19) {
                 try {
                     val movieObj = discoverResult?.getJSONObject(i)
-                    Log.d("movieObj", "movieObj num $i has the title: ${movieObj?.getString("title")}")
+                    Log.d("movieObj",
+                        "movieObj num $i has the title: ${movieObj?.getString("title")}")
 
                     dataArray.add(Movie(
                         movieObj?.getInt("id"),
@@ -107,7 +102,8 @@ class HomeFragment : Fragment() {
             }
 
             /* Fill the recyclerview */
-            mRecyclerView?.adapter = MovieAdapter(dataArray) { position -> onListItemClick(position) }
+            mRecyclerView?.adapter = MovieAdapter(dataArray)
+            { position -> onListItemClick(position) }
 
         }, 2000) //2 sec
     }
@@ -122,13 +118,6 @@ class HomeFragment : Fragment() {
 
         val selectedMovie = dataArray.get(position)
 
-        /* for inserting classes and objects that are custom or complex, the Parcelable class needs
-        to be implemented, its time consuming to create and implement too... I also can't pass on
-        an array so its really limited to a few selections */
-
-        // intent.putExtra("MovieArray", dataArray) //cannot do that
-        // intent.putExtra("MoviePosition", position) //cannot do that
-
         intent.putExtra("CurrentMovieId", selectedMovie.id)
         intent.putExtra("CurrentMovieTitle", selectedMovie.title)
         intent.putExtra("CurrentMovieOverview", selectedMovie.overview)
@@ -137,9 +126,6 @@ class HomeFragment : Fragment() {
         intent.putExtra("CurrentMovieReleaseDate", selectedMovie.releaseDate)
 
         activity?.startActivity(intent)
-
-        // Toast.makeText(context, "itemOnCLick pressed: Item location: ${dataArray.get(position)}",
-        //    Toast.LENGTH_SHORT).show()
     }
 
     /**
@@ -182,6 +168,5 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 
 }

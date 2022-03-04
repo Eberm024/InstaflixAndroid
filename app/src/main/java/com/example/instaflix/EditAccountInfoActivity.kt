@@ -7,26 +7,19 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.provider.MediaStore
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.decodeBitmap
 import androidx.core.graphics.drawable.toBitmap
 import com.parse.*
-import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
 
 class EditAccountInfoActivity : AppCompatActivity() {
@@ -44,7 +37,7 @@ class EditAccountInfoActivity : AppCompatActivity() {
 
     private var selectedImageBytes: ByteArray? = null
 
-    val startForResults = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    private val startForResults = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             val intent = result.data
@@ -80,7 +73,7 @@ class EditAccountInfoActivity : AppCompatActivity() {
         val btnConfirm = findViewById<Button>(R.id.btn_edit_account_confirm)
 
         btnCancel.setOnClickListener {
-            btnCancelOnClick();
+            btnCancelOnClick()
         }
 
         btnConfirm.setOnClickListener {
@@ -104,7 +97,7 @@ class EditAccountInfoActivity : AppCompatActivity() {
 
         //alertDialog
         val progressBarFragment = ProgressBarDialogFragment()
-        progressBarFragment?.show(supportFragmentManager, "progressBar")
+        progressBarFragment.show(supportFragmentManager, "progressBar")
 
         if(usernameEditText?.text.toString() != "") {
             //Update username
@@ -167,10 +160,9 @@ class EditAccountInfoActivity : AppCompatActivity() {
 
     private fun uploadTask() {
         //trigger the image upload stuff
-        val mode = Manifest.permission.READ_EXTERNAL_STORAGE
         verifyStoragePermissions(this)
         val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.setType("image/*")
+        intent.type = "image/*"
         startForResults.launch(Intent.createChooser(intent, "Open Gallery"))
     }
 
